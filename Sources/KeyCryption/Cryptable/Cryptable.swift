@@ -1,0 +1,1 @@
+typealias Cryptable = Encryptable & Decryptable
