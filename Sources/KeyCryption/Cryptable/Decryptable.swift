@@ -31,3 +31,11 @@ public extension Decryptable where Self: Codable {
         return object
     }
 }
+
+//MARK: - Decryptable & Data
+public extension Decryptable where Self == Data {
+    static func object(from data: Data) -> Self? {
+        return data
+    }
+}
+

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension Data: Cryptable {
+extension Data: Cryptable {
 }
 
 public extension String {

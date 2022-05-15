@@ -45,3 +45,10 @@ public extension Encryptable where Self: Codable {
         return try? encoder.encode(self)
     }
 }
+
+//MARK: - Encryptable & Data
+public extension Encryptable where Self == Data {
+    var data: Data? {
+        return self
+    }
+}
