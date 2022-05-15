@@ -27,7 +27,7 @@ public extension Encryptable {
 //MARK: - Encryptable & AES
 public extension Encryptable {
     func encrypt(using key: String = "") throws -> Data {
-        guard !key.isEmpty && !generalKey.isEmpty else {
+        guard !key.isEmpty || !generalKey.isEmpty else {
             throw CryptionError.emptyKey
         }
         guard let data = data else {
