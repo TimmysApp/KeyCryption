@@ -8,7 +8,7 @@
 import Foundation
 import CommonCrypto
 
-struct AES {
+internal struct AES {
     let keyData: Data
     let ivSize: Int = kCCKeySizeAES256
     let options: CCOptions = CCOptions(kCCOptionPKCS7Padding)

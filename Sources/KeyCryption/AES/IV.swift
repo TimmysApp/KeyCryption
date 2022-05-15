@@ -8,7 +8,7 @@
 import Foundation
 import CommonCrypto
 
-extension AES {
+internal extension AES {
     func generateRandomIV(for data: inout Data) throws {
         try data.withUnsafeMutableBytes { dataBytes in
             guard let dataBytesBaseAddress = dataBytes.baseAddress else {

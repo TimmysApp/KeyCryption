@@ -8,7 +8,7 @@
 import Foundation
 import CommonCrypto
 
-extension AES {
+internal extension AES {
     func encrypt(_ dataToEncrypt: Data) throws -> Data {
         let bufferSize: Int = ivSize + dataToEncrypt.count + kCCKeySizeAES256
         var buffer = Data(count: bufferSize)

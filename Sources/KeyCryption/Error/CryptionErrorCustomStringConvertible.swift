@@ -8,7 +8,7 @@
 import Foundation
 
 extension CryptionError: CustomStringConvertible {
-    var description: String {
+    public var description: String {
         switch self {
             case .invalidKeySize(let expected, let provided):
                 return "The size of the Provided Key is invalid, expected value \(expected) but current value is \(provided)"

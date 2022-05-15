@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol Encryptable {
+public protocol Encryptable {
     var generalKey: String {get set}
     var data: Data? {get}
     func encrypt(using key: String) throws -> Data
 }
 
-extension Encryptable {
+public extension Encryptable {
     var generalKey: String {
         get {
             return ""
@@ -25,7 +25,7 @@ extension Encryptable {
 }
 
 //MARK: - Encryptable & AES
-extension Encryptable {
+public extension Encryptable {
     func encrypt(using key: String = "") throws -> Data {
         guard !key.isEmpty && !generalKey.isEmpty else {
             throw CryptionError.emptyKey
@@ -39,7 +39,7 @@ extension Encryptable {
 }
 
 //MARK: - Encryptable & Codable
-extension Encryptable where Self: Codable {
+public extension Encryptable where Self: Codable {
     var data: Data? {
         let encoder = JSONEncoder()
         return try? encoder.encode(self)

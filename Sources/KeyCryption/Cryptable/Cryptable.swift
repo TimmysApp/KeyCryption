@@ -1,1 +1,1 @@
-typealias Cryptable = Encryptable & Decryptable
+public typealias Cryptable = Encryptable & Decryptable

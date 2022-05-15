@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CryptionError: Error {
+public enum CryptionError: Error {
     case invalidKeySize(expected: Int, provided: Int)
     case randomIVGeneratorFailed
     case encryptionFailed(reason: String? = nil)

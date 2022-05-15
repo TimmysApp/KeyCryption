@@ -14,7 +14,7 @@ extension CryptionError: LocalizedError {
     }
 }
 
-extension String {
+public extension String {
     var localized: String {
         NSLocalizedString(self, comment: "")
     }

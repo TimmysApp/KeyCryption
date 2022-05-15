@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol Decryptable {
+public protocol Decryptable {
     static func object(from: Data) -> Self?
     static func decrypt(using key: String, data: Data) throws -> Self
 }
 
 //MARK: - Decryptable & AES
-extension Decryptable {
+public extension Decryptable {
     static func decrypt(using key: String, data: Data) throws -> Self {
         let decryptedData = try AES(key: key).decrypt(data)
         guard let object = object(from: decryptedData) else {
@@ -24,7 +24,7 @@ extension Decryptable {
 }
 
 //MARK: - Decryptable & Codable
-extension Decryptable where Self: Codable {
+public extension Decryptable where Self: Codable {
     var generalKey: String {
         get {
             return ""
