@@ -25,13 +25,6 @@ public extension Decryptable {
 
 //MARK: - Decryptable & Codable
 public extension Decryptable where Self: Codable {
-    var generalKey: String {
-        get {
-            return ""
-        }
-        set {
-        }
-    }
     static func object(from data: Data) -> Self? {
         let decoder = JSONDecoder()
         let object = try? decoder.decode(Self.self, from: data)
