@@ -9,18 +9,14 @@ import Foundation
 
 public protocol Decryptable {
     static func object(from: Data) -> Self?
-    static func decrypt(using key: String, data: Data?) throws -> Self
+    static func decrypt(using key: String, data: Data?) -> Self?
 }
 
 //MARK: - Decryptable & AES
 public extension Decryptable {
-    static func decrypt(using key: String, data: Data?) throws -> Self {
-        guard let data = data else {
-            throw CryptionError.objectCreationFailed
-        }
-        let decryptedData = try AES(key: key).decrypt(data)
-        guard let object = object(from: decryptedData) else {
-            throw CryptionError.objectCreationFailed
+    static func decrypt(using key: String, data: Data?) -> Self? {
+        guard let data = data, let decryptedData = try? AES(key: key).decrypt(data), let object = object(from: decryptedData) else {
+            return nil
         }
         return object
     }

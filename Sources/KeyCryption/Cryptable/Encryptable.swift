@@ -10,7 +10,7 @@ import Foundation
 public protocol Encryptable {
     var generalKey: String {get set}
     var data: Data? {get}
-    func encrypt(using key: String) throws -> Data
+    func encrypt(using key: String) -> Data?
 }
 
 public extension Encryptable {
@@ -26,14 +26,10 @@ public extension Encryptable {
 
 //MARK: - Encryptable & AES
 public extension Encryptable {
-    func encrypt(using key: String = "") throws -> Data {
-        guard !key.isEmpty || !generalKey.isEmpty else {
-            throw CryptionError.emptyKey
+    func encrypt(using key: String = "") -> Data? {
+        guard !key.isEmpty || !generalKey.isEmpty, let data = data, let encryptedData = try? AES(key: key).encrypt(data) else {
+            return nil
         }
-        guard let data = data else {
-            throw CryptionError.dataCreationFailed
-        }
-        let encryptedData = try AES(key: key).encrypt(data)
         return encryptedData
     }
 }
