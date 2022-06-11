@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 extension CryptionError: LocalizedError {
     public var errorDescription: String? {
