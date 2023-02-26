@@ -8,11 +8,11 @@
 import Foundation
 
 public protocol CryptableIterable {
-    func allProperties() -> [String: Any]?
+    var properties: [String: Any]? {get}
 }
 
 public extension CryptableIterable {
-    func allProperties() -> [String: Any]? {
+    var properties: [String: Any]? {
         var result: [String: Any] = [:]
         let mirror = Mirror(reflecting: self)
         guard let style = mirror.displayStyle, style == .struct || style == .class else {

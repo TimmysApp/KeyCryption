@@ -25,7 +25,7 @@ public extension CodeCryptable {
 extension CodeCryptable {
     func decoding() -> Self {
         var object = self
-        self.allProperties()?.forEach { item in
+        self.properties?.forEach { item in
             guard var keyable = object[item.key] as? Keyable else {return}
             if let cryptingKey = Self.keys[item.key] ?? Self.key {
                 keyable.key = cryptingKey
