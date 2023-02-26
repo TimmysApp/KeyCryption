@@ -13,7 +13,7 @@ public final class Cryptable<Value: Codable & Equatable & Hashable>: Keyable {
     internal var key: String
     private let inMemory: Bool
     private var decryptedValue: Value?
-    public var data = Data()
+    public var data: Data?
 //MARK: - Initializer
     public init(wrappedValue defaultValue: Value? = nil, key: CustomStringConvertible, inMemory: Bool = false) {
         self.key = key.description
@@ -32,6 +32,9 @@ public final class Cryptable<Value: Codable & Equatable & Hashable>: Keyable {
         get {
             if let decryptedValue {
                 return decryptedValue
+            }
+            guard let data else {
+                fatalError("No data available")
             }
             do {
                 let object = try AES(key: key).decrypt(data, using: Value.self)
@@ -63,6 +66,7 @@ public final class Cryptable<Value: Codable & Equatable & Hashable>: Keyable {
         self.decryptedValue = nil
     }
     public func decrypt() {
+        guard let data else {return}
         do {
             self.decryptedValue = try AES(key: key).decrypt(data, using: Value.self)
         }catch {
