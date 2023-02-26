@@ -63,4 +63,12 @@ internal extension AES {
         let decryptedData: Data = buffer[..<numberBytesDecrypted]
         return decryptedData
     }
+    func decrypt<Object: Codable>(_ data: Data, using model: Object.Type) throws -> Object {
+        let data = try decrypt(data)
+        return try JSONDecoder().decode(Object.self, from: data)
+    }
+    func encrypt<Object: Codable>(object: Object) throws -> Data {
+        let data = try JSONEncoder().encode(object)
+        return try encrypt(data)
+    }
 }
