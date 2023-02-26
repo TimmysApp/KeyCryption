@@ -8,7 +8,7 @@
 import Foundation
 import KeyValueCoding
 
-protocol CodeCryptable: Codable, KeyValueCoding, Iterable {
+public protocol CodeCryptable: Codable, KeyValueCoding, Iterable {
     static var empty: Self {get}
 }
 
@@ -29,8 +29,8 @@ extension CodeCryptable {
     }
 }
 
-final class CryptableDecoder: JSONDecoder {
-    override func decode<T>(_ type: T.Type, from data: Data) throws -> T where T: Decodable {
+public final class CryptableDecoder: JSONDecoder {
+    public override func decode<T>(_ type: T.Type, from data: Data) throws -> T where T: Decodable {
         let oldObject = try JSONDecoder().decode(T.self, from: data)
         guard let codeCryptable = oldObject as? CodeCryptable else {
             fatalError()
