@@ -9,16 +9,16 @@ import Foundation
 import KeyValueCoding
 
 public protocol CodeCryptable: Codable, KeyValueCoding, CryptableIterable {
-    static var keys: [String: String] {get}
-    static var key: String? {get}
+    static var keys: [String: CustomStringConvertible] {get}
+    static var key: CustomStringConvertible {get}
 }
 
 public extension CodeCryptable {
-    static var keys: [String: String] {
+    static var keys: [String: CustomStringConvertible] {
         return [:]
     }
-    static var key: String? {
-        return nil
+    static var key: CustomStringConvertible {
+        return ""
     }
 }
 
@@ -27,13 +27,13 @@ extension CodeCryptable {
         var object = self
         self.properties?.forEach { item in
             guard var keyable = object[item.key] as? Keyable else {return}
-            if let cryptingKey = Self.keys[item.key] ?? Self.key {
-                keyable.key = cryptingKey
-                try? keyable.encrypt()
-                object[item.key] = keyable
-            }else {
+            let cryptingKey = Self.keys[item.key]?.description ?? Self.key.description
+            guard !cryptingKey.isEmpty else {
                 fatalError("You need to provide either a general key or keys for each property")
             }
+            keyable.key = cryptingKey
+            try? keyable.encrypt()
+            object[item.key] = keyable
         }
         return object
     }

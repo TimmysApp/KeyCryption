@@ -2,22 +2,23 @@ import XCTest
 @testable import KeyCryption
 
 final class KeyCryptionTests: XCTestCase {
-    func testExample() throws {
-        let ob = Testy(test: "Hi h", hi: "ergtrgre")
-        let data = try! JSONEncoder().encode(ob)
-        print(String(data: data, encoding: .utf8))
+    func testEncryptingAndEncoding() throws {
+        let sut = Testy(id: UUID(), test: "Hi!", hi: "This is a test")
+        let data = try! JSONEncoder().encode(sut)
+        print(String(data: data, encoding: .utf8) ?? "")
         let new = try! CryptableDecoder().decode(Testy.self, from: data)
         print(new.test)
-        
+        XCTAssert(new.id == sut.id && new.test == sut.test && new.hi == sut.hi)
     }
 }
 
 struct Testy: CodeCryptable {
-    static var empty = Testy(test: "", hi: "")
-    @Cryptable(key: "{Ef,&,pS0JVUnH:NM7*EvMEtd!,J9,7_") var test: String = ""
-    @Cryptable(key: "{Ef,&,pS0JVUnH:NM7*EvMEtd!,J9,71") var hi: String
-    init(test: String, hi: String) {
-        self.test = test
-        self.hi = hi
+    static var key = "{Ef,&,pS0JVUnH:NM7*EvMEtd!,J9,7_"
+    @Cryptable(key: key) var test: String = ""
+    @Cryptable(key: key) var hi: String
+    var id: UUID?
+    init(id: UUID?, test: String, hi: String) {
+        self._test.wrappedValue = test
+        self._hi.wrappedValue = hi
     }
 }
