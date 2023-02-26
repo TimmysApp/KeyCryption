@@ -8,7 +8,7 @@
 import Foundation
 import KeyValueCoding
 
-public protocol CodeCryptable: Codable, KeyValueCoding, Iterable {
+public protocol CodeCryptable: Codable, KeyValueCoding, CryptableIterable {
     static var keys: [String: String] {get}
     static var key: String? {get}
 }

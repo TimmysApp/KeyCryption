@@ -7,11 +7,11 @@
 
 import Foundation
 
-public protocol Iterable {
+public protocol CryptableIterable {
     func allProperties() -> [String: Any]?
 }
 
-public extension Iterable {
+public extension CryptableIterable {
     func allProperties() -> [String: Any]? {
         var result: [String: Any] = [:]
         let mirror = Mirror(reflecting: self)
