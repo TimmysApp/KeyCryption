@@ -8,9 +8,9 @@
 import Foundation
 
 @propertyWrapper
-public class Cryptable<Value: Codable & Equatable & Hashable>: Codable {
+public final class Cryptable<Value: Codable & Equatable & Hashable>: Keyable {
 //MARK: - Properties
-    private let key: String
+    internal var key: String
     private let inMemory: Bool
     private var decryptedValue: Value?
     public var data = Data()
@@ -18,7 +18,14 @@ public class Cryptable<Value: Codable & Equatable & Hashable>: Codable {
     public init(wrappedValue defaultValue: Value? = nil, key: CustomStringConvertible, inMemory: Bool = false) {
         self.key = key.description
         self.inMemory = inMemory
-        self.decryptedValue = defaultValue
+        if let defaultValue {
+            if inMemory || key.description.isEmpty {
+                self.decryptedValue = defaultValue
+            }
+            if !key.description.isEmpty {
+                wrappedValue = defaultValue
+            }
+        }
     }
 //MARK: - Mappings
     public var wrappedValue: Value {
@@ -33,7 +40,7 @@ public class Cryptable<Value: Codable & Equatable & Hashable>: Codable {
                 }
                 return object
             }catch {
-                fatalError(error.localizedDescription)
+                fatalError(String(describing: error))
             }
         }
         set {
@@ -51,6 +58,10 @@ public class Cryptable<Value: Codable & Equatable & Hashable>: Codable {
         return self
     }
 //MARK: - Functions
+    public func encrypt() throws {
+        self.data = try AES(key: key).encrypt(object: decryptedValue)
+        self.decryptedValue = nil
+    }
     public func decrypt() {
         do {
             self.decryptedValue = try AES(key: key).decrypt(data, using: Value.self)
@@ -58,8 +69,18 @@ public class Cryptable<Value: Codable & Equatable & Hashable>: Codable {
             fatalError(error.localizedDescription)
         }
     }
-    public func removeFromMemory() {
-        self.decryptedValue = nil
+}
+
+//MARK: - Codable
+extension Cryptable: Codable {
+    public convenience init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        self.init(wrappedValue: try container.decode(Value.self), key: "")
+    }
+    public func encode(to encoder: Encoder) throws {
+        decrypt()
+        var container = encoder.singleValueContainer()
+        try container.encode(decryptedValue)
     }
 }
 
@@ -75,4 +96,9 @@ extension Cryptable: Equatable {
     public static func == (lhs: Cryptable<Value>, rhs: Cryptable<Value>) -> Bool {
         return lhs.data == rhs.data
     }
+}
+
+protocol Keyable {
+    var key: String {get set}
+    func encrypt() throws
 }
