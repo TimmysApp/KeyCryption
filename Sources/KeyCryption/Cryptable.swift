@@ -10,7 +10,7 @@ import Foundation
 @propertyWrapper
 public final class Cryptable<Value: Codable & Equatable & Hashable>: Keyable {
 //MARK: - Properties
-    internal var key: String
+    public var key: String
     private let inMemory: Bool
     private var decryptedValue: Value?
     public var data: Data?
@@ -102,7 +102,8 @@ extension Cryptable: Equatable {
     }
 }
 
-protocol Keyable {
+public protocol Keyable {
+    var data: Data? {get set}
     var key: String {get set}
     func encrypt() throws
 }
