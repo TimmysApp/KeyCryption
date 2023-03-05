@@ -10,14 +10,14 @@ import KeyValueCoding
 
 public protocol CodeCryptable: Codable, KeyValueCoding, CryptableIterable {
     static var keys: [String: CustomStringConvertible] {get}
-    static var key: CustomStringConvertible {get}
+    static var key: String {get}
 }
 
 public extension CodeCryptable {
     static var keys: [String: CustomStringConvertible] {
         return [:]
     }
-    static var key: CustomStringConvertible {
+    static var key: String {
         return ""
     }
 }

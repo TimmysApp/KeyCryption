@@ -79,7 +79,7 @@ public final class Cryptable<Value: Codable & Equatable & Hashable>: Keyable {
 extension Cryptable: Codable {
     public convenience init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        let value = container.decodeNil() ? nil:  try container.decode(Value.self)
+        let value = container.decodeNil() ? nil: try container.decode(Value.self)
         self.init(wrappedValue: value, key: "")
     }
     public func encode(to encoder: Encoder) throws {
