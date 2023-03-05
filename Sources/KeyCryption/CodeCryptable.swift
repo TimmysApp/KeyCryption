@@ -43,7 +43,7 @@ public final class CryptableDecoder: JSONDecoder {
     public override func decode<T>(_ type: T.Type, from data: Data) throws -> T where T: Decodable {
         let oldObject = try JSONDecoder().decode(T.self, from: data)
         guard let codeCryptable = oldObject as? CodeCryptable else {
-            fatalError()
+            return oldObject
         }
         return codeCryptable.decoding() as! T
     }
